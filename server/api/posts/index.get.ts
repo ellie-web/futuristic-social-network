@@ -76,7 +76,8 @@ export default defineEventHandler(async (event) => {
       include: {
         author: {
           select: {
-            name: true
+            name: true,
+            avatarUrl: true
           }
         }
       },

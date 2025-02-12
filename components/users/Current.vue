@@ -5,12 +5,14 @@
         <h1>Your profile</h1>
         <div class="flex items-center">
           <UAvatar
+            :src="avatarUrl"
             icon="i-heroicons-photo"
-            :src="`/api/files?fileName=${data.avatarUrl}`"
+            size="3xl"
+            img-class="object-cover"
           />
-          <div class="ml-4">
+          <h1 class="ml-4">
             {{ data.name }}
-          </div>
+          </h1>
         </div>
 
         <UInput
@@ -23,6 +25,7 @@
           <UAvatar
             :src="files[0].content.toString()"
             size="3xl"
+            img-class="object-cover"
           />
           <UButton @click="handleUploadAvatar">upload avatar</UButton>
         </template>
@@ -41,6 +44,7 @@ type TProps = {
   data: Omit<IUser, 'password'>
 }
 const { data } = defineProps<TProps>()
+const avatarUrl = computed(() => data.avatarUrl ? `/api/files?fileName=${data.avatarUrl}` : undefined)
 
 const { handleFileInput, files } = useFileStorage()
 

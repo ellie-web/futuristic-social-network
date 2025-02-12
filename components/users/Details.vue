@@ -4,12 +4,14 @@
       <template #header>
         <div class="flex items-center">
           <UAvatar
+            :src="avatarUrl"
             icon="i-heroicons-photo"
-            :src="data.avatarUrl"
+            size="3xl"
+            img-class="object-cover"
           />
-          <div class="ml-4">
+          <h1 class="ml-4">
             {{ data.name }}
-          </div>
+          </h1>
         </div>
       </template>
     </UCard>
@@ -25,4 +27,5 @@ type TProps = {
   data: Omit<IUser, 'password'>
 }
 const { data } = defineProps<TProps>()
+const avatarUrl = computed(() => data.avatarUrl ? `/api/files?fileName=${data.avatarUrl}` : undefined)
 </script>

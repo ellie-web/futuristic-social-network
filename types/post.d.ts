@@ -10,6 +10,7 @@ export interface IPost {
 
 export interface IFeedPost extends IPost {
   author: {
-    name: string
+    name: string,
+    avatarUrl?: string
   }
 }
