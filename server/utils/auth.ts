@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 import prisma from '~/lib/prisma'
 import bcrypt from 'bcrypt'
-import IUser from '~/types/User'
+import IUser from '~/types/user'
 
 // Logs the user in as the given user model
 async function login(event: H3Event<Request>, user: IUser) {

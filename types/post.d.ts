@@ -1,9 +1,15 @@
 import type IUser from './User'
 
-export default interface IPost {
+export interface IPost {
   id: number,
   content: string,
   author: IUser,
   createdAt: Date,
   authorId: number
+}
+
+export interface IFeedPost extends IPost {
+  author: {
+    name: string
+  }
 }

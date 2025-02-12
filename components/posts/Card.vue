@@ -1,18 +1,24 @@
 <template>
-  <UCard>
+  <UCard class="relative">
     <template #header>
-      {{ props.data.authorId }}
+      {{ props.data.author.name }}
     </template>
-
+    <div>----------</div>
+    <div>----------</div>
+    <div>----------</div>
+    <div>----------</div>
     {{ props.data.content }}
-
+    <div>----------</div>
+    <div>----------</div>
+    <div>----------</div>
+    <div>----------</div>
     <template #footer>
       {{ props.data.createdAt }}
     </template>
   </UCard>
 </template>
 <script setup lang="ts">
-import type IPost from '~/types/post'
+import type { IFeedPost } from '~/types/post'
 
-const props = defineProps<{ data: Omit<IPost, 'author'> }>()
+const props = defineProps<{ data: IFeedPost }>()
 </script>
