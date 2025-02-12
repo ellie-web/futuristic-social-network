@@ -1,7 +1,7 @@
 <template>
   <div
     ref="postsWrapRef"
-    class="h-[70dvh] w-[100dvw] fixed top-[30dvh] left-0 overflow-auto scrollbar-hide"
+    class="h-full w-full absolute left-0 top-0 overflow-auto scrollbar-hide"
   >
     <template v-if="posts && posts">
       <PostsCard
@@ -30,6 +30,8 @@ type TResponse = {
 
 const LIMIT = 3
 
+const { userId } = defineProps<{ userId?: number }>()
+
 const postsWrapRef = useTemplateRef<HTMLElement>('postsWrapRef')
 
 const posts = ref<IFeedPost[]>([])
@@ -41,7 +43,8 @@ const loadMore = async () => {
     const _data = await $fetch<TResponse>(`/api/posts`, {
       query: {
         limit: LIMIT,
-        cursor: cursor.value
+        cursor: cursor.value,
+        userId
       }
     })
 

@@ -1,17 +1,13 @@
 <template>
   <UCard class="relative">
     <template #header>
-      {{ props.data.author.name }}
+      <ULink :to="`/users/${props.data.authorId}`">
+        {{ props.data.author.name }}
+      </ULink>
     </template>
-    <div>----------</div>
-    <div>----------</div>
-    <div>----------</div>
-    <div>----------</div>
+
     {{ props.data.content }}
-    <div>----------</div>
-    <div>----------</div>
-    <div>----------</div>
-    <div>----------</div>
+
     <template #footer>
       {{ props.data.createdAt }}
     </template>

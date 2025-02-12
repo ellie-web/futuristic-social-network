@@ -35,6 +35,18 @@ export default defineEventHandler(async (event) => {
         return z.NEVER
       }
       return parsed
+    }),
+    userId: z.string().optional().transform((val, ctx) => {
+      if (!val) return undefined
+      const parsed = parseInt(val)
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'userId must be a valid number',
+        })
+        return z.NEVER
+      }
+      return parsed
     })
   })
 
@@ -48,12 +60,19 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    const cursor = validatedQuery.data.cursor ? {
+      id: validatedQuery.data.cursor 
+    } : undefined
+
+    const where = validatedQuery.data.userId ? {
+      authorId: validatedQuery.data.userId
+    } : undefined
+
     const posts = await prisma.post.findMany({
       take: validatedQuery.data.limit,
       skip: validatedQuery.data.cursor ? 1 : 0, // skip cursor or skip zero
-      cursor: validatedQuery.data.cursor 
-        ? { id: validatedQuery.data.cursor }
-        : undefined,
+      cursor,
+      where,
       include: {
         author: {
           select: {

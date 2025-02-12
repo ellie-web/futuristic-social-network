@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-[100dvh] flex flex-col">
     <h1>home</h1>
     <div v-if="user">Welcome, {{ user }}!</div>
     <div>
@@ -8,8 +8,10 @@
       <UButton @click="logout">Logout</UButton>
     </div>
 
-    <div>
-      <PostsCreate />
+    <PostsCreate />
+
+    <div class="relative flex-1">
+
       <PostsFeed />
     </div>
   </div>
