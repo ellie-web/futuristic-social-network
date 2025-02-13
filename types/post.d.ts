@@ -4,7 +4,7 @@ export interface IPost {
   id: number,
   content: string,
   author: IUser,
-  createdAt: string,
+  createdAt: string | Date,
   authorId: number
 }
 

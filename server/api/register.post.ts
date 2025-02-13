@@ -16,7 +16,9 @@ export default defineEventHandler(async (event) => {
       .min(8, 'Password must contain at least 8 symbols'),
     name: z
       .string()
-      .optional()
+      .optional(),
+    avatarUrl: z
+      .null()
   }).transform(val => ({
     ...val,
     name: val.name ? val.name : val.email
