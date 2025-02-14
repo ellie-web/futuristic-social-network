@@ -1,8 +1,10 @@
 <template>
   <NuxtLayout>
-    <NuxtPage />
+    <NuxtPage class="flex flex-col flex-1" />
   </NuxtLayout>
+  <UNotifications />
 </template>
+
 <style>
 
   /*

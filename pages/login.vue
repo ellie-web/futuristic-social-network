@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div class="flex-1">
     <h1>login page</h1>
-    <ULink to="/register">Register</ULink>
     <UForm
       ref="formRef"
       :state="state"
@@ -66,7 +65,6 @@ definePageMeta({
 })
 
 const schema = z.object({
-  name: z.string().optional().or(z.literal('')),
   email: z.string({ required_error: 'Required field' }).email('Please enter a valid email'),
   password: z.string({ required_error: 'Required field' })
 })
@@ -90,23 +88,12 @@ const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   try {
     isLoading.value = true
 
-    await $fetch('/api/auth/login', {
-      method: 'POST',
-      body: state
-    })
+    const { login } = useUserStore()
+
+    await login(event.data)
 
     formRef.value?.clear()
     Object.assign(state, stateDefault)
-
-    // refresh the session status now that the user is logged in
-    const { fetch } = useUserSession()
-    await fetch()
-
-    // TODO:
-    // you may want to use something like Pinia to manage global state of the logged-in user
-    // update Pinia state here...
-    // await store.refreshUser()
-    await navigateTo('/')
   }
   catch (err: any) {
     error.value = err.statusMessage ? err.statusMessage : 'Error logging in'

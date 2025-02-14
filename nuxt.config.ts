@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@nuxt/ui',
     '@nuxt/image',
-    'nuxt-file-storage'
+    'nuxt-file-storage',
+    '@pinia/nuxt'
   ],
   fileStorage: {
     mount: process.env.FILES_DIR

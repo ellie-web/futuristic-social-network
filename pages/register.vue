@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div class="flex-1">
     <h1>register page</h1>
-    <ULink to="/login">Login</ULink>
     <UForm
       ref="formRef"
       :state="state"
@@ -103,12 +102,9 @@ const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
     Object.assign(state, stateDefault)
 
     // refresh the session status now that the user is logged in
-    const { fetch } = useUserSession()
-    await fetch()
-
-    // TODO:
-    // update Pinia state here...
-    // store.refreshUser();
+    const { fetchSession, refreshUser } = useUserStore()
+    await fetchSession()
+    await refreshUser()
     await navigateTo('/')
   }
   catch (err: any) {

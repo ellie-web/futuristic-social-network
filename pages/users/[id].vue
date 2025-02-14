@@ -9,9 +9,9 @@
       :data="data"
     />
   </template>
-  <template v-if="error">
+  <div v-if="error">
     {{ error }}
-  </template>
+  </div>
 </template>
 <script setup lang="ts">
 const { user } = useUserSession()
