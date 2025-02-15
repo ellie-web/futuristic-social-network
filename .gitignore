@@ -27,3 +27,7 @@ logs
 prisma/migrations/
 prisma/*.db
 prisma/*.db-journal
+
+# drizzle
+database/migrations/
+database/*.db

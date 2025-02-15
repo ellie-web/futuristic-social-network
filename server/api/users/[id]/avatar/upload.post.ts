@@ -1,6 +1,6 @@
 import { ServerFile } from 'nuxt-file-storage'
-import prisma from '~/lib/prisma'
 import { z } from 'zod'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event)
@@ -28,14 +28,12 @@ export default defineEventHandler(async (event) => {
 
   try {
     const fileName = await storeFileLocally(file, 12)
-    await prisma.user.update({
-      where: {
-        id: session.user.id
-      },
-      data: {
-        avatarUrl: fileName
-      }
-    })
+
+    const { db, User } = useDrizzle()
+
+    await db.update(User)
+      .set({ avatarUrl: fileName })
+      .where(eq(User.id, session.user.id))
   }
   catch (err) {
     throw createError({

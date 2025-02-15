@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
-import prisma from '~/lib/prisma'
 import bcrypt from 'bcrypt'
 import IUser from '~/types/user'
+import { eq } from 'drizzle-orm'
 
 // Logs the user in as the given user model
 async function login(event: H3Event<Request>, user: IUser) {
@@ -23,12 +23,12 @@ async function getCurrentUser(event: H3Event<Request>) {
     return null
   }
 
-  const result = await prisma.user.findFirst({
-    where: {
-      id: session.user.id
-    },
-    omit: {
-      password: true
+  const { db, User } = useDrizzle()
+
+  const result = await db.query.User.findFirst({
+    where: eq(User.id, session.user!.id),
+    columns: {
+      password: false
     }
   })
 
@@ -36,10 +36,10 @@ async function getCurrentUser(event: H3Event<Request>) {
 }
 
 async function attempt(event: H3Event<Request>, email: string, password: string) {
-  const foundUser = await prisma.user.findUnique({
-    where: {
-      email
-    }
+  const db = useDrizzle()
+
+  const foundUser = await db.query.User.findFirst({
+    where: (User, { eq }) => eq(User.email, email)
   })
 
   // compare the password hash

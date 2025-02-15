@@ -40,7 +40,7 @@ const hasMore = ref<undefined | boolean>(undefined)
 
 const loadMore = async () => {
   try {
-    const _data = await $fetch<TResponse>(`/api/posts`, {
+    const _data = await $fetch<TResponse>(`/api/posts/feed`, {
       query: {
         limit: LIMIT,
         cursor: cursor.value,

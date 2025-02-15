@@ -5,7 +5,7 @@ export default interface IUser {
   email: string,
   name: string,
   password: string,
-  createdAt: string | Date,
+  createdAt: string | Date | number,
   avatarUrl: string | null,
   posts?: IPost[]
 }
