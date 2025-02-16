@@ -1,5 +1,5 @@
-import prisma from '~/lib/prisma'
 import { z } from 'zod'
+import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const id = Number(event.context.params?.id)
@@ -15,15 +15,14 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: validatedId.data
-      },
-      omit: {
-        password: true
+    const { db, User } = useDrizzle()
+
+    const user = await db.query.User.findFirst({
+      where: eq(User.id, validatedId.data),
+      columns: {
+        password: false
       }
     })
-
 
     if (!user) {
       throw createError({

@@ -2,12 +2,11 @@
   <div>
     <UAvatar
       :src="avatarUrl"
-      @click="openModal"
       icon="i-heroicons-photo"
       size="3xl"
       img-class="object-cover"
     />
-
+    <UButton @click="openModal">Edit</UButton>
   </div>
   <UModal v-model="isModalOpen">
     <UCard>

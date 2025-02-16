@@ -1,4 +1,3 @@
-import prisma from '~/lib/prisma'
 import { z } from 'zod'
 
 export default defineEventHandler(async (event) => {
@@ -27,11 +26,13 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const createdPost = await prisma.post.create({
-      data: validatedData.data
-    })
+    const { db, Post } = useDrizzle()
 
-    return createdPost
+    const createdPost = await db.insert(Post)
+      .values(validatedData.data)
+      .returning()
+
+    return createdPost[0]
   }
 
   catch (err) {

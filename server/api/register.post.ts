@@ -1,6 +1,7 @@
-import prisma from '~/lib/prisma'
 import bcrypt from 'bcrypt'
+import { ServerFile } from 'nuxt-file-storage'
 import { z } from 'zod'
+import { InsertUser } from '~/database/schema'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event) => {
       .string()
       .optional(),
     avatarUrl: z
-      .null()
+      .undefined()
   }).transform(val => ({
     ...val,
     name: val.name ? val.name : val.email
@@ -27,6 +28,7 @@ export default defineEventHandler(async (event) => {
   const validatedData = RegisterSchema.safeParse({
     email: body.email,
     name: body.name,
+    avatarUrl: body.avatarUrl,
     password: body.password
   })
 
@@ -38,25 +40,28 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    const { db, User } = useDrizzle()
+
     // hash the password before storing it in the database
     const passwordHash = bcrypt.hashSync(validatedData.data.password, 12)
 
-    const createdUser = await prisma.user.create({
-      data: {
+    const createdUser = await db.insert(User)
+      .values({
         ...validatedData.data,
         password: passwordHash
-      }
-    })
-    
+      } as InsertUser)
+      .returning()
+      
     if (createdUser) {
-      await auth.login(event, createdUser)
+      await auth.login(event, createdUser[0])
     }
   }
 
-  catch (err) {
+  catch (err: any) {
+    console.log(err.toString())
     throw createError({
       statusCode: 500,
-      statusMessage: 'Error registering user'
+      message: err.message
     })
   }
 })

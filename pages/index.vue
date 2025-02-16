@@ -24,4 +24,5 @@ definePageMeta({
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+
 </script>

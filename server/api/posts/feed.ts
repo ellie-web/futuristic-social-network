@@ -1,5 +1,6 @@
-import prisma from '~/lib/prisma'
 import { z } from 'zod'
+import { and, eq } from 'drizzle-orm'
+import { withCursorPagination } from 'drizzle-pagination'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
@@ -60,39 +61,44 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const cursor = validatedQuery.data.cursor ? {
-      id: validatedQuery.data.cursor 
-    } : undefined
+    const { db, Post } = useDrizzle()
 
-    const where = validatedQuery.data.userId ? {
-      authorId: validatedQuery.data.userId
-    } : undefined
+    const where = []
 
-    const posts = await prisma.post.findMany({
-      take: validatedQuery.data.limit,
-      skip: validatedQuery.data.cursor ? 1 : 0, // skip cursor or skip zero
-      cursor,
-      where,
-      include: {
+    if (validatedQuery.data.userId) {
+      where.push(eq(Post.authorId, validatedQuery.data.userId))
+    }
+
+    const posts = await db.query.Post.findMany({
+      ...withCursorPagination({
+        where: and(...where),
+        cursors: [
+          [
+            Post.createdAt,
+            'desc',
+            validatedQuery.data.cursor
+          ]
+        ],
+        limit: validatedQuery.data.limit,
+      }),
+      with: {
         author: {
-          select: {
+          columns: {
             name: true,
             avatarUrl: true
           }
         }
-      },
-      orderBy: {
-        createdAt: 'desc',
       }
     })
 
     return {
       posts,
-      nextCursor: posts.length === validatedQuery.data.limit ? posts[validatedQuery.data.limit - 1].id : undefined,
+      nextCursor: posts.length === validatedQuery.data.limit ? posts[validatedQuery.data.limit - 1].createdAt : undefined,
       hasMore: posts.length === validatedQuery.data.limit
     }
   }
   catch (err) {
+    console.log(err)
     throw createError({
       statusCode: 500,
       statusMessage: 'Error getting posts'
