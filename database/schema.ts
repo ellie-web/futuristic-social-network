@@ -1,40 +1,47 @@
-import { relations, sql } from 'drizzle-orm'
-import { foreignKey, int, numeric, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { relations } from 'drizzle-orm'
+import { integer, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core'
 
-export const User = sqliteTable('User', {
-	id: int('id').notNull().primaryKey(),
-	email: text('email').notNull().unique(),
-	name: text('name').notNull(),
-	password: text('password').notNull(),
-	createdAt: numeric('createdAt').notNull().default(sql`DATE('now')`),
+export const User = pgTable('User', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  password: text('password').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
 	avatarUrl: text('avatarUrl')
-});
+})
 
-export const Post = sqliteTable('Post', {
-	id: int('id').notNull().primaryKey(),
-	content: text('content').notNull(),
-	createdAt: numeric('createdAt').notNull().default(sql`DATE('now')`),
-	authorId: int('authorId').notNull()
-}, (Post) => ({
-	'Post_author_fkey': foreignKey({
-		name: 'Post_author_fkey',
-		columns: [Post.authorId],
-		foreignColumns: [User.id]
-	})
-		.onDelete('cascade')
-		.onUpdate('cascade')
-}));
+export const Post = pgTable('Post', {
+  id: serial('id').primaryKey(),
+  content: text('content').notNull(),
+  authorId: integer('authorId')
+    .notNull()
+    .references(() => User.id, { onDelete: 'cascade' }),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  // updatedAt: timestamp('updated_at')
+  //   .notNull()
+  //   .$onUpdate(() => new Date()),
+})
 
-export const UserRelations = relations(User, ({ many }) => ({
-	posts: many(Post, {
-		relationName: 'PostToUser'
-	})
-}));
+export const Subscription = pgTable('Subscription', {
+  followerId: integer('followerId')
+    .notNull()
+    .references(() => User.id, { onDelete: 'cascade' }),
+  followingId: integer('followingId')
+    .notNull()
+    .references(() => User.id, { onDelete: 'cascade' })
+}, (table) => [
+  primaryKey({ columns: [table.followerId, table.followingId]})
+])
 
-export const PostRelations = relations(Post, ({ one }) => ({
-	author: one(User, {
-		relationName: 'PostToUser',
-		fields: [Post.authorId],
-		references: [User.id]
-	})
-}));
+export const postsRelations = relations(Post, ({ one }) => ({
+	author: one(User, { fields: [Post.authorId], references: [User.id] }),
+}))
+
+export type InsertUser = typeof User.$inferInsert
+export type SelectUser = typeof User.$inferSelect
+
+export type InsertPost = typeof Post.$inferInsert
+export type SelectPost = typeof Post.$inferSelect
+
+export type InsertSubscription = typeof Subscription.$inferInsert
+export type SelectSubscription = typeof Subscription.$inferSelect

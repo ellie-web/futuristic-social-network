@@ -1,6 +1,7 @@
 <template>
   <div>
     <AvatarEdit v-if="isCurrentUser" />
+
     <UAvatar
       v-else
       :src="avatarUrl"

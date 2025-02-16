@@ -21,7 +21,7 @@
 import type { IFeedPost } from '~/types/post'
 import { useInfiniteScroll } from '@vueuse/core'
 
-type TNextCursor = string | undefined
+type TNextCursor = number | string | undefined
 type TResponse = {
   posts: IFeedPost[],
   nextCursor: TNextCursor,
@@ -34,11 +34,16 @@ const { userId } = defineProps<{ userId?: number }>()
 
 const postsWrapRef = useTemplateRef<HTMLElement>('postsWrapRef')
 
+const errorTimeout = ref<any>(null)
+
 const posts = ref<IFeedPost[]>([])
 const cursor = ref<TNextCursor>(undefined)
 const hasMore = ref<undefined | boolean>(undefined)
 
 const loadMore = async () => {
+  if (errorTimeout.value) return
+  if (isLoading.value) return
+
   try {
     const _data = await $fetch<TResponse>(`/api/posts/feed`, {
       query: {
@@ -55,7 +60,8 @@ const loadMore = async () => {
     }
   }
   catch (err) {
-
+    clearTimeout(errorTimeout.value)
+    errorTimeout.value = setTimeout(() => errorTimeout.value = null, 5000)
   }
 }
 

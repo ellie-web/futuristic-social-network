@@ -91,7 +91,6 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-
     return {
       posts,
       nextCursor: posts.length === validatedQuery.data.limit ? posts[validatedQuery.data.limit - 1].createdAt : undefined,
@@ -99,6 +98,7 @@ export default defineEventHandler(async (event) => {
     }
   }
   catch (err) {
+    console.log(err)
     throw createError({
       statusCode: 500,
       statusMessage: 'Error getting posts'
