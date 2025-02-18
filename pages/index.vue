@@ -1,6 +1,6 @@
 <template>
-  <div class="relative grid grid-cols-12">
-    <div class="sticky top-0 col-span-4 max-h-fit z-10 backdrop-blur-lg">
+  <div class="relative grid grid-cols-12 gap-5">
+    <div class="sticky top-12 col-span-3 max-h-fit z-10 backdrop-blur-lg">
       <h1>home</h1>
       <div v-if="user">Welcome, {{ user }}!</div>
       <div>
@@ -10,7 +10,7 @@
       <PostsCreate v-if="loggedIn" />
     </div>
 
-    <div class="relative flex-1 col-span-8">
+    <div class="relative flex-1 col-span-9">
       <PostsFeed />
     </div>
 

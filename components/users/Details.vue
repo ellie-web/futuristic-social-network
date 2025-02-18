@@ -1,5 +1,5 @@
 <template>
-  <UCard class="mb-5">
+  <UCard>
     <template #header>
       <div class="flex items-center">
         <Avatar :user="data" />
@@ -9,9 +9,6 @@
       </div>
     </template>
   </UCard>
-  <div class="relative flex-1">
-    <PostsFeed :userId="data.id" />
-  </div>
 </template>
 <script setup lang="ts">
 import type IUser from '~/types/user'
