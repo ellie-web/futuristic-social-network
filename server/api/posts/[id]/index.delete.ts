@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     await db.delete(Post).where(
       and(
         eq(Post.id, validatedId.data),
-        eq(Post.authorId, Number(session.user.id))
+        eq(Post.authorId, session.user.id)
       )
     )
 
