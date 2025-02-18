@@ -6,6 +6,6 @@ export default interface IUser {
   name: string,
   password: string,
   createdAt: string | Date | number,
-  avatarUrl: string | null,
+  avatarUrl: string | undefined,
   posts?: IPost[]
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[100dvh] flex flex-col">
+  <div class="relative">
     <UHorizontalNavigation :links="links" />
     <slot />
   </div>

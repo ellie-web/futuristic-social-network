@@ -1,32 +1,29 @@
 <template>
-  <div
-    ref="postsWrapRef"
-    class="h-full w-full absolute left-0 top-0 overflow-auto scrollbar-hide"
-  >
-    <template v-if="posts && posts">
-      <PostsCard
-        v-for="post in posts"
-        :data="post"
-        :key="post.id"
-        class="mb-5"
-      />
-    </template>
-    <!-- <template v-if="error">
+  <ClientOnly>
+    <div
+      ref="postsWrapRef"
+      class="w-full left-0 top-0"
+    >
+      <template v-if="posts && posts">
+        <PostsCard
+          v-for="post in posts"
+          :data="post"
+          :key="post.id"
+          :link="userId ? `/users/${userId}/posts/${post.id}` : `/posts/${post.id}`"
+          class="mb-5"
+        />
+      </template>
+      <!-- <template v-if="error">
       {{ error }}
     </template> -->
-  </div>
+    </div>
+  </ClientOnly>
+
 
 </template>
 <script setup lang="ts">
-import type { IFeedPost } from '~/types/post'
+import type { TFeedResponse, TFeedNextCursor } from '~/types/feed'
 import { useInfiniteScroll } from '@vueuse/core'
-
-type TNextCursor = number | string | undefined
-type TResponse = {
-  posts: IFeedPost[],
-  nextCursor: TNextCursor,
-  hasMore: boolean
-}
 
 const LIMIT = 3
 
@@ -36,8 +33,10 @@ const postsWrapRef = useTemplateRef<HTMLElement>('postsWrapRef')
 
 const errorTimeout = ref<any>(null)
 
-const posts = ref<IFeedPost[]>([])
-const cursor = ref<TNextCursor>(undefined)
+const postsStore = usePostsStore()
+const { posts } = storeToRefs(postsStore)
+
+const cursor = ref<TFeedNextCursor>(undefined)
 const hasMore = ref<undefined | boolean>(undefined)
 
 const loadMore = async () => {
@@ -45,7 +44,7 @@ const loadMore = async () => {
   if (isLoading.value) return
 
   try {
-    const _data = await $fetch<TResponse>(`/api/posts/feed`, {
+    const _data = await $fetch<TFeedResponse>(`/api/posts/feed`, {
       query: {
         limit: LIMIT,
         cursor: cursor.value,

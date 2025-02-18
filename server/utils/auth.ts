@@ -62,7 +62,7 @@ async function attempt(event: H3Event<Request>, email: string, password: string)
     }
 
     // log in as the selected user
-    await login(event, foundUser)
+    await login(event, foundUser as IUser)
 
     return true
   }

@@ -1,0 +1,40 @@
+{
+  "workbench.editor.customLabels.patterns": {
+  	"**/components/*/index.vue": "${dirname(-3)}",
+    "**/components/*/*/index.vue": "${dirname(-3)}${dirname(-4)}",
+
+    "**/components/*/*.vue": "${dirname(-3)}${filename}",
+    "**/components/*/*/*.vue": "${dirname(-3)}${dirname(-4)}${filename}",
+    "**/components/*/*/*/*.vue": "${dirname(-3)}${dirname(-4)}${dirname(-5)}${filename}",
+    
+
+    "**/server/api/*/index.ts": "api/${dirname(-4)} [GET]",
+    "**/server/api/*/index.post.ts": "api/${dirname(-4)} [POST]",
+    "**/server/api/*/index.put.ts": "api/${dirname(-4)} [PUT]",
+    "**/server/api/*/index.delete.ts": "api/${dirname(-4)} [DELETE]",
+
+    "**/server/api/*/*/index.ts": "api/${dirname(-4)}/${dirname(-5)} [GET]",
+    "**/server/api/*/*/index.post.ts": "api/${dirname(-4)}/${dirname(-5)} [POST]",
+    "**/server/api/*/*/index.put.ts": "api/${dirname(-4)}/${dirname(-5)} [PUT]",
+    "**/server/api/*/*/index.delete.ts": "api/${dirname(-4)}/${dirname(-5)} [DELETE]",
+
+    "**/server/api/*/*/*/index.ts": "api/${dirname(-4)}/${dirname(-5)}/${dirname(-6)} [GET]",
+    "**/server/api/*/*/*/index.post.ts": "api/${dirname(-4)}/${dirname(-5)}/${dirname(-6)} [POST]",
+    "**/server/api/*/*/*/index.put.ts": "api/${dirname(-4)}/${dirname(-5)}/${dirname(-6)} [PUT]",
+    "**/server/api/*/*/*/index.delete.ts": "api/${dirname(-4)}/${dirname(-5)}/${dirname(-6)} [DELETE]",
+
+    "**/server/api/*/*.ts": "api/${dirname(-4)}/${filename}",
+    "**/server/api/*/*/*.ts": "api/${dirname(-4)}/${dirname(-5)}/${filename}",
+    "**/server/api/*/*/*/*.ts": "api/${dirname(-4)}/${dirname(-5)}/${dirname(-6)}/${filename}",
+
+    "**/pages/*/index.vue": "${dirname(-3)}",
+    "**/pages/*/*/index.vue": "${dirname(-3)}/${dirname(-4)}",
+    "**/pages/*/*/*/index.vue": "${dirname(-3)}/${dirname(-4)}/${dirname(-5)}",
+
+    "**/pages/*/*.vue": "${dirname(-3)}/${filename}",
+    "**/pages/*/*/*.vue": "${dirname(-3)}/${dirname(-4)}/${filename}",
+    "**/pages/*/*/*/*.vue": "${dirname(-3)}/${dirname(-4)}/${dirname(-5)}/${filename}",
+
+    "**/stores/*.ts": "${filename} - Store",
+  }
+}

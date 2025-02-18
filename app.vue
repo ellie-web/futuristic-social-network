@@ -1,11 +1,22 @@
 <template>
   <NuxtLayout>
-    <NuxtPage class="flex flex-col flex-1" />
+    <NuxtPage />
   </NuxtLayout>
   <UNotifications />
 </template>
+<script setup lang="ts">
+import gsap from 'gsap'
 
+const { toggleTransitionComplete } = useTransition()
+
+onMounted(() => {
+  toggleTransitionComplete(true)
+})
+</script>
 <style>
+  body {
+    height: 100dvh;
+  }
 
   /*
   Enter and leave animations can use different

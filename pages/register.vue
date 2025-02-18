@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1">
+  <div>
     <h1>register page</h1>
     <UForm
       ref="formRef"

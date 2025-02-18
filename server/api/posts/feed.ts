@@ -27,14 +27,7 @@ export default defineEventHandler(async (event) => {
     }),
     cursor: z.string().optional().transform((val, ctx) => {
       if (!val) return undefined
-      const parsed = parseInt(val)
-      if (isNaN(parsed)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'cursor must be a valid number',
-        })
-        return z.NEVER
-      }
+      const parsed = new Date(val)
       return parsed
     }),
     userId: z.string().optional().transform((val, ctx) => {
