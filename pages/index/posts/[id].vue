@@ -5,6 +5,9 @@
   />
 </template>
 <script setup lang="ts">
+definePageMeta({
+  scrollToTop: false
+})
 
 const { params } = useRoute()
 </script>

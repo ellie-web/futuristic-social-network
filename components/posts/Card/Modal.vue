@@ -35,6 +35,7 @@ const { routeAfterClose = '/', postId } = defineProps<TProps>()
 const postsStore = usePostsStore()
 const { showError } = useErrorToast()
 
+
 const { data: post, error } = await useAsyncData(
   `posts/${postId}`,
   () => postsStore.getPostById(postId)
@@ -48,12 +49,4 @@ if (error.value?.statusCode === 404) {
 const handleClose = async () => {
   return await navigateTo(routeAfterClose)
 }
-
-// onBeforeMount(() => {
-//   document.getElementsByTagName('body')[0].style.overflow = 'hidden'
-// })
-
-// onUnmounted(() => {
-//   document.getElementsByTagName('body')[0].style.overflow = 'auto'
-// })
 </script>

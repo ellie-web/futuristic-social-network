@@ -5,8 +5,6 @@
   <UNotifications />
 </template>
 <script setup lang="ts">
-import gsap from 'gsap'
-
 const { toggleTransitionComplete } = useTransition()
 
 onMounted(() => {
