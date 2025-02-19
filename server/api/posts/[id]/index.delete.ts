@@ -19,12 +19,13 @@ export default defineEventHandler(async (event) => {
   try {
     const { db, Post } = useDrizzle()
 
-    await db.delete(Post).where(
-      and(
-        eq(Post.id, validatedId.data),
-        eq(Post.authorId, session.user.id)
+    await db.delete(Post)
+    .where(
+        and(
+          eq(Post.id, validatedId.data),
+          eq(Post.authorId, session.user.id)
+        )
       )
-    )
 
     return setResponseStatus(event, 204)
   }

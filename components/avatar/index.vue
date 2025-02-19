@@ -12,13 +12,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import type IUser from '~/types/user'
+import type TUserPublic from '~/types/user'
 
-type TProps = {
-  user: Omit<IUser, 'password'>
-}
-
-const { user } = defineProps<TProps>()
+const { user } = defineProps<{ user: TUserPublic }>()
 
 const userStore = useUserStore()
 const { user: currentUser } = storeToRefs(userStore)

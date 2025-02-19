@@ -7,7 +7,9 @@ export const User = pgTable('User', {
   email: text('email').notNull().unique(),
   password: text('password').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-	avatarUrl: text('avatarUrl')
+	avatarUrl: text('avatarUrl'),
+  followers: integer('followers').notNull().default(0),
+  following: integer('following').notNull().default(0)
 })
 
 export const Post = pgTable('Post', {
@@ -17,9 +19,8 @@ export const Post = pgTable('Post', {
     .notNull()
     .references(() => User.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  // updatedAt: timestamp('updated_at')
-  //   .notNull()
-  //   .$onUpdate(() => new Date()),
+  updatedAt: timestamp('updated_at')
+    .$onUpdate(() => new Date()),
 })
 
 export const Subscription = pgTable('Subscription', {

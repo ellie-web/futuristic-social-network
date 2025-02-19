@@ -18,6 +18,13 @@
             img-class="object-cover"
           />
           {{ data.author.name }}
+          <FollowUnfollowButton
+            v-if="!isCurrentUser"
+            :id="data.authorId"
+            hide-if-following
+            small
+            class="ml-3"
+          />
         </ULink>
 
         <div

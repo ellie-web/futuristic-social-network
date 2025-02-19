@@ -25,9 +25,11 @@
 import type { TFeedResponse, TFeedNextCursor } from '~/types/feed'
 import { useInfiniteScroll } from '@vueuse/core'
 
-const LIMIT = 3
+const LIMIT = 10
 
 const { userId } = defineProps<{ userId?: number }>()
+
+const abortController = new AbortController()
 
 const postsWrapRef = useTemplateRef<HTMLElement>('postsWrapRef')
 
@@ -48,8 +50,9 @@ const loadMore = async () => {
       query: {
         limit: LIMIT,
         cursor: cursor.value,
-        userId
-      }
+        userId: userId
+      },
+      signal: abortController.signal
     })
 
     if (_data) {
@@ -78,7 +81,13 @@ const { isLoading, reset } = useInfiniteScroll(
   }
 )
 
+onMounted(() => {
+  resetData()
+  reset()
+})
+
 onUnmounted(() => {
+  abortController.abort()
   resetData()
   reset()
 })

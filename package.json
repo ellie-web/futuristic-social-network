@@ -27,6 +27,7 @@
     "nuxt-auth-utils": "^0.5.14",
     "pinia": "^3.0.1",
     "postgres": "^3.4.5",
+    "swrv": "^1.1.0",
     "tailwind-scrollbar-hide": "^2.0.0",
     "vue": "latest",
     "vue-advanced-cropper": "^2.8.9",

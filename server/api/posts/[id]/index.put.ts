@@ -4,7 +4,6 @@ import { z } from 'zod'
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event)
 
-
   const id = Number(event.context.params?.id)
 
   const IdSchema = z.number({message: 'id must be a number'})
