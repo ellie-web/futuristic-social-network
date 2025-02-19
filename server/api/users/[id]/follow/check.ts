@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { and, eq, sql } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 type TResponse = {
   isFollowing: boolean,

@@ -33,13 +33,12 @@ const abortController = new AbortController()
 
 const postsWrapRef = useTemplateRef<HTMLElement>('postsWrapRef')
 
-const errorTimeout = ref<any>(null)
-
 const postsStore = usePostsStore()
 const { posts } = storeToRefs(postsStore)
 
 const cursor = ref<TFeedNextCursor>(undefined)
 const hasMore = ref<undefined | boolean>(undefined)
+const errorTimeout = ref<any>(null)
 
 const loadMore = async () => {
   if (errorTimeout.value) return
