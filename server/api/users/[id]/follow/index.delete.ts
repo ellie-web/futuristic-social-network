@@ -27,6 +27,8 @@ export default defineEventHandler(async (event) => {
         )
       )
 
+
+    // TODO: optimize !!
     // update 'followers' counter on the user thats being unfollowed
     const unfollowedUserName = await db.update(User)
       .set({

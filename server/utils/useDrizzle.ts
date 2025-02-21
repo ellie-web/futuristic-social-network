@@ -8,14 +8,13 @@ export default function() {
   const client = postgres(process.env.SUPABASE_URL!, { prepare: false })
   const db = drizzle({ client, schema })
 
-  const User = schema.User
-  const Post = schema.Post
-  const Subscription = schema.Subscription
+  const { User, Post, Subscription, Like } = schema
 
   return {
     db,
     User,
     Post,
-    Subscription
+    Subscription,
+    Like
   }
 }

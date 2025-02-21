@@ -1,6 +1,5 @@
 import { z } from 'zod'
-import { and, eq } from 'drizzle-orm'
-import { withCursorPagination } from 'drizzle-pagination'
+import { and, desc, eq, exists, getTableColumns, lt, SQL, sql } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
@@ -53,36 +52,46 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  try {
-    const { db, Post } = useDrizzle()
+  const { user } = await getUserSession(event)
 
-    const where = []
+  try {
+    const { db, Post, Like, User } = useDrizzle()
+
+
+    const filters: SQL[] = [];
 
     if (validatedQuery.data.userId) {
-      where.push(eq(Post.authorId, validatedQuery.data.userId))
+      filters.push(eq(Post.authorId, validatedQuery.data.userId))
     }
 
-    const posts = await db.query.Post.findMany({
-      ...withCursorPagination({
-        where: and(...where),
-        cursors: [
-          [
-            Post.createdAt,
-            'desc',
-            validatedQuery.data.cursor
-          ]
-        ],
-        limit: validatedQuery.data.limit,
-      }),
-      with: {
+    if (validatedQuery.data.cursor) {
+      filters.push(lt(Post.createdAt, validatedQuery.data.cursor))
+    }
+
+    const likeSubquery = db
+      .select({ id: sql`1` })
+      .from(Like)
+      .where(and(
+        eq(Like.postId, Post.id),
+        eq(Like.userId, user!.id)
+      ));
+
+    const posts = await db
+      .select({
+        // Select Post fields
+        ...getTableColumns(Post),
+        // Select specific author fields
         author: {
-          columns: {
-            name: true,
-            avatarUrl: true
-          }
-        }
-      }
-    })
+          name: User.name,
+          avatarUrl: User.avatarUrl
+        },
+        isLiked: exists(user ? likeSubquery : sql`false`)
+      })
+      .from(Post)
+      .leftJoin(User, eq(Post.authorId, User.id))
+      .where(and(...filters))
+      .orderBy(desc(Post.createdAt))
+      .limit(validatedQuery.data.limit)
 
     return {
       posts,

@@ -6,6 +6,8 @@ export interface IPost {
   author: TUserPublic,
   createdAt: string | Date | number,
   updatedAt: string | Date | number | null,
-  authorId: number
+  authorId: number,
+  likes: number,
+  isLiked: boolean
 }
 

@@ -41,24 +41,24 @@ const { data, error } = await useFetch<TUserPublic>(`/api/users/${params.userId}
 
 const postsStore = usePostsStore()
 
-const followersRef = ref(data.value?.followers)
-const followingRef = ref(data.value?.following)
+const _followersRef = ref(data.value?.followers)
+const _followingRef = ref(data.value?.following)
 
 const followers = computed({
   get() {
-    return followersRef.value
+    return _followersRef.value
   },
   set(value) {
-    followersRef.value = value
+    _followersRef.value = value
   }
 })
 
 const following = computed({
   get() {
-    return followingRef.value
+    return _followingRef.value
   },
   set(value) {
-    followingRef.value = value
+    _followingRef.value = value
   }
 })
 

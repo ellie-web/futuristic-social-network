@@ -39,7 +39,10 @@
     {{ data.content }}
 
     <template #footer>
-      {{ data.createdAt }}
+      <div class="flex items-center justify-between">
+        <PostsLikeButton :post="data" />
+        {{ data.createdAt }}
+      </div>
     </template>
   </UCard>
 </template>

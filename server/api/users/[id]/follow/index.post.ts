@@ -25,6 +25,8 @@ export default defineEventHandler(async (event) => {
         followingId: validatedId.data
       })
 
+
+    // TODO: optimize !!
     // update 'followers' counter on the user thats being followed
     const followedUserName = await db.update(User)
       .set({

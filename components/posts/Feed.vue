@@ -34,6 +34,7 @@ const abortController = new AbortController()
 const postsWrapRef = useTemplateRef<HTMLElement>('postsWrapRef')
 
 const postsStore = usePostsStore()
+const likesStore = useLikesStore()
 const { posts } = storeToRefs(postsStore)
 
 const cursor = ref<TFeedNextCursor>(undefined)
@@ -83,11 +84,13 @@ const { isLoading, reset } = useInfiniteScroll(
 onMounted(() => {
   resetData()
   reset()
+  likesStore.clearLikes()
 })
 
 onUnmounted(() => {
   abortController.abort()
   resetData()
   reset()
+  likesStore.clearLikes()
 })
 </script>

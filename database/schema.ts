@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { integer, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { boolean, integer, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const User = pgTable('User', {
   id: serial('id').primaryKey(),
@@ -21,6 +21,7 @@ export const Post = pgTable('Post', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at')
     .$onUpdate(() => new Date()),
+  likes: integer('likes').notNull().default(0)
 })
 
 export const Subscription = pgTable('Subscription', {
@@ -32,6 +33,17 @@ export const Subscription = pgTable('Subscription', {
     .references(() => User.id, { onDelete: 'cascade' })
 }, (table) => [
   primaryKey({ columns: [table.followerId, table.followingId]})
+])
+
+export const Like = pgTable('Like', {
+  userId: integer('userId')
+    .notNull()
+    .references(() => User.id, { onDelete: 'cascade' }),
+  postId: integer('postId')
+    .notNull()
+    .references(() => Post.id, { onDelete: 'cascade' }),
+}, (table) => [
+  primaryKey({ columns: [table.userId, table.postId]})
 ])
 
 export const postsRelations = relations(Post, ({ one }) => ({
@@ -46,3 +58,6 @@ export type SelectPost = typeof Post.$inferSelect
 
 export type InsertSubscription = typeof Subscription.$inferInsert
 export type SelectSubscription = typeof Subscription.$inferSelect
+
+export type InsertLike = typeof Like.$inferInsert
+export type SelectLike = typeof Like.$inferSelect
