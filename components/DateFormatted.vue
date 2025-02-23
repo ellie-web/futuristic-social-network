@@ -1,34 +1,26 @@
 <template>
-  <n-tooltip>
-    <template #trigger>
-      <n-time
-        v-if="isOlderThanADay"
-        :time="_date"
-      />
-      <n-time
-        v-else-if="isOlderThanAYear"
-        :time="_date"
-        format="d MMM. y"
-      />
-      <n-time
-        v-else
-        :time="_date"
-        :to="new Date()"
-        type="relative"
-      />
-    </template>
-
-    <n-time
-      :time="_date"
-      format="h:mm a - d MMM. y"
-    />
-  </n-tooltip>
+  <UTooltip :text="fullDate">
+    <span>{{ formattedDate }}</span>
+  </UTooltip>
 </template>
 <script setup lang="ts">
+import { format, formatDistance } from 'date-fns'
+
+
 const { date } = defineProps<{ date: Date | string | number }>()
 
 const _date = computed(() => new Date(date))
-const isOlderThanADay = computed(() => (new Date()).getHours() - (_date.value.getHours()) >= 24)
-const isOlderThanAYear = computed(() => (new Date().getFullYear() - (_date.value.getFullYear())) >= 1)
 
+const formattedDate = computed(() => {
+  switch (true) {
+    case ((new Date().getFullYear() - (_date.value.getFullYear())) >= 1):
+      return format(_date.value, 'd MMM. y')
+    case ((new Date()).getTime() - (_date.value.getTime()) >= 24 * 60 * 60 * 1000):
+      return format(_date.value, 'd MMM.')
+    default:
+      return formatDistance(_date.value, new Date()) + ' ago'
+  }
+})
+
+const fullDate = computed(() => format(_date.value, 'h:mm a - d MMM. y'))
 </script>

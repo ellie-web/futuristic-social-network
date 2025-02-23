@@ -10,22 +10,22 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@libsql/client": "^0.14.0",
     "@nuxt/image": "^1.9.0",
     "@nuxt/ui": "^2.21.0",
     "@pinia/nuxt": "^0.10.1",
     "@vueuse/core": "^12.5.0",
     "bcrypt": "^5.1.1",
+    "date-fns": "^4.1.0",
     "drizzle-orm": "^0.39.3",
     "file-type": "^20.1.0",
     "gsap": "npm:gsap-trial@^3.12.7",
-    "naive-ui": "^2.41.0",
-    "nuxt": "^3.15.4",
+    "nuxt": "^3.6.0",
     "nuxt-auth-utils": "^0.5.14",
-    "nuxtjs-naive-ui": "^1.0.2",
+    "nuxt-time": "^1.0.3",
     "pinia": "^3.0.1",
     "postgres": "^3.4.5",
     "swrv": "^1.1.0",
@@ -38,6 +38,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^2.1.0",
     "@types/bcrypt": "^5.0.2",
     "dotenv": "^16.4.7",
     "drizzle-kit": "^0.30.4",
