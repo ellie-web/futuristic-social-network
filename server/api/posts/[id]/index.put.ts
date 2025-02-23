@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
     const { db, Post } = useDrizzle()
 
     const post = await db.update(Post)
-      .set({content: validatedData.data.content})
+      .set({content: validatedData.data.content, updatedAt: new Date()})
       .where(eq(Post.id, validatedId.data))
       .returning()
 

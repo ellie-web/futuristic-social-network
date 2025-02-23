@@ -19,8 +19,7 @@ export const Post = pgTable('Post', {
     .notNull()
     .references(() => User.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at')
-    .$onUpdate(() => new Date()),
+  updatedAt: timestamp('updated_at'),
   likes: integer('likes').notNull().default(0)
 })
 
