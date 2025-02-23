@@ -41,7 +41,19 @@
     <template #footer>
       <div class="flex items-center justify-between">
         <PostsLikeButton :post="data" />
-        {{ data.createdAt }}
+
+        <div class="text-gray-400">
+          <DateFormatted :date="data.createdAt" />
+
+          <span
+            v-if="data.updatedAt"
+            class="italic"
+          >
+            <span>&nbsp;(last edited:&nbsp;</span>
+            <DateFormatted :date="data.updatedAt" />
+            <span>)</span>
+          </span>
+        </div>
       </div>
     </template>
   </UCard>
