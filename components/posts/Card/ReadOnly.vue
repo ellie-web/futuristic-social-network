@@ -36,7 +36,7 @@
       </div>
     </template>
 
-    {{ data.content }}
+    <span class="whitespace-pre-wrap">{{ data.content }}</span>
 
     <template #footer>
       <div class="flex items-center justify-between">
@@ -81,8 +81,3 @@ const handleClick = async () => {
   await navigateTo(link)
 }
 </script>
-<style lang="postcss" scoped>
-  .post-card div {
-    display: inline-block;
-  }
-</style>
