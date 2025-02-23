@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, integer, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { integer, pgTable, primaryKey, serial, text, timestamp, index } from 'drizzle-orm/pg-core'
 
 export const User = pgTable('User', {
   id: serial('id').primaryKey(),
@@ -32,7 +32,9 @@ export const Subscription = pgTable('Subscription', {
     .notNull()
     .references(() => User.id, { onDelete: 'cascade' })
 }, (table) => [
-  primaryKey({ columns: [table.followerId, table.followingId]})
+  primaryKey({ columns: [table.followerId, table.followingId]}),
+  index('followerId_idx').on(table.followerId),
+  index('followingId_idx').on(table.followingId)
 ])
 
 export const Like = pgTable('Like', {
@@ -43,7 +45,9 @@ export const Like = pgTable('Like', {
     .notNull()
     .references(() => Post.id, { onDelete: 'cascade' }),
 }, (table) => [
-  primaryKey({ columns: [table.userId, table.postId]})
+  primaryKey({ columns: [table.userId, table.postId]}),
+  index('userId_idx').on(table.userId),
+  index('postId_idx').on(table.postId)
 ])
 
 export const postsRelations = relations(Post, ({ one }) => ({
