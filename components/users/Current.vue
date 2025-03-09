@@ -1,13 +1,23 @@
 <template>
   <UCard>
     <template #header>
-      <h1>Your profile</h1>
-      <div class="flex items-center mb-7">
+      <div class="mb-4">
         <Avatar :user="data" />
-        <h1 class="ml-4">
+      </div>
+      <div class="gap-y-4 mb-7">
+        <h1>
           {{ data.name }}
         </h1>
+        <p class="text-gray-400 mb-2">@{{ data.username }}</p>
+
+        <p>{{ data.bio }}</p>
       </div>
+
+
+      <div class="mb-7">
+        <UButton :to="`/users/${data.username}/settings`">Edit profile</UButton>
+      </div>
+
       <div class="flex items-center justify-center gap-5">
         <div class="flex flex-col items-center">
           <p>{{ data.followers }}</p>

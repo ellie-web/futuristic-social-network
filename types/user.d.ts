@@ -5,6 +5,7 @@ export default interface IUser {
   username: string,
   email: string,
   name: string,
+  bio: string | null | undefined,
   password: string,
   createdAt: string | Date | number,
   avatarUrl: string | null | undefined,

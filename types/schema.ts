@@ -20,3 +20,8 @@ export const userCreateSchema = createInsertSchema(User, {
   password: (schema) => schema
     .min(8, 'Password must contain at least 8 symbols')
 })
+
+export const userUpdateSchema = createUpdateSchema(User, {
+  name: (schema) => schema.max(45),
+  bio: (schema) => schema.max(160)
+})

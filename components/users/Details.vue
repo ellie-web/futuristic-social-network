@@ -1,24 +1,30 @@
 <template>
   <UCard>
     <template #header>
-      <div class="flex items-center mb-7">
+
+      <div class="mb-5">
         <Avatar
           v-if="userContext"
           :user="userContext"
         />
-        <div class="ml-4">
-          <h1>
-            {{ userContext?.name }}
-          </h1>
-
-          <FollowUnfollowButton
-            v-if="userContext"
-            :id="userContext.id"
-            class="mt-2"
-          />
-        </div>
-
+        <FollowUnfollowButton
+          v-if="userContext"
+          :id="userContext.id"
+          class="mt-2"
+        />
       </div>
+      <div class="gap-y-4 mb-5">
+        <h1>
+          {{ userContext?.name }}
+        </h1>
+
+        <p class="text-gray-400 mb-2">@{{ userContext?.username }}</p>
+
+        <p>{{ userContext?.bio }}</p>
+      </div>
+
+
+
       <div class="flex items-center justify-center gap-5 mb-4">
         <div class="flex flex-col items-center">
           <p>{{ userContext?.followers }}</p>
