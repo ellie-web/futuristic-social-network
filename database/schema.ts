@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import { integer, pgTable, primaryKey, serial, text, timestamp, index } from 'drizzle-orm/pg-core'
 
 export const User = pgTable('User', {
@@ -11,8 +11,17 @@ export const User = pgTable('User', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
 	avatarUrl: text('avatarUrl'),
   followers: integer('followers').notNull().default(0),
-  following: integer('following').notNull().default(0)
-})
+  following: integer('following').notNull().default(0),
+},
+(table) => [
+  index('search_index').using(
+    'gin',
+    sql`(
+        setweight(to_tsvector('english', ${table.name}), 'A') ||
+        setweight(to_tsvector('english', ${table.username}), 'B')
+    )`,
+  ),
+])
 
 export const Post = pgTable('Post', {
   id: serial('id').primaryKey(),

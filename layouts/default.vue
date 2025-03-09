@@ -1,9 +1,12 @@
 <template>
   <div class="relative pt-12">
-    <UHorizontalNavigation
-      :links="links"
-      class="fixed top-0 left-0 w-full z-20 bg-white dark:bg-gray-900"
-    />
+    <div class="fixed top-0 left-0 w-full z-20 bg-gray-900 flex items-center">
+      <UHorizontalNavigation
+        :links="links"
+        class="w-auto"
+      />
+      <UserSearch />
+    </div>
     <slot />
   </div>
 </template>
