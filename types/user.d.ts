@@ -2,11 +2,12 @@ import type IPost from './post'
 
 export default interface IUser {
   id: number,
+  username: string,
   email: string,
   name: string,
   password: string,
   createdAt: string | Date | number,
-  avatarUrl: string | undefined,
+  avatarUrl: string | null | undefined,
   followers: number,
   following: number
   posts?: IPost[]

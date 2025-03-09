@@ -8,7 +8,7 @@
     <template #header>
       <div class="flex items-center">
         <ULink
-          :to="`/users/${data.authorId}`"
+          :to="`/users/${data.author.username}`"
           class="flex items-center"
         >
           <UAvatar
@@ -17,7 +17,8 @@
             class="mr-3"
             img-class="object-cover"
           />
-          {{ data.author.name }}
+          <span class="mr-2">{{ data.author.name }}</span>
+          <span class="text-gray-400">@{{ data.author.username }}</span>
           <FollowUnfollowButton
             v-if="!isCurrentUser"
             :id="data.authorId"

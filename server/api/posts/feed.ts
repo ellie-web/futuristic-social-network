@@ -83,6 +83,7 @@ export default defineEventHandler(async (event) => {
         // Select specific author fields
         author: {
           name: User.name,
+          username: User.username,
           avatarUrl: User.avatarUrl
         },
         isLiked: exists(user ? likeSubquery : sql`false`)

@@ -17,7 +17,10 @@
           class="relative flex-1 col-span-9"
           v-if="data"
         >
-          <PostsFeed :userId="data.id" />
+          <PostsFeed
+            :userId="data.id"
+            :username="data.username"
+          />
         </div>
       </div>
     </template>
@@ -37,7 +40,11 @@ import transitionConfig from '~/helpers/transitionsConfig'
 
 const { user } = useUserSession()
 const { params } = useRoute()
-const { data, error } = await useFetch<TUserPublic>(`/api/users/${params.userId}`)
+const { data, error } = await useFetch<TUserPublic>('/api/users/getByUsername', {
+  params: {
+    username: params?.username
+  }
+})
 
 const postsStore = usePostsStore()
 

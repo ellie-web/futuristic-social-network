@@ -25,7 +25,7 @@ const links = computed(() => [
   },
   user && {
     label: 'my page',
-    to: `/users/${user.value?.id}`
+    to: `/users/${user.value?.username}`
   }
 ])
 </script>

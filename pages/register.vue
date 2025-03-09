@@ -6,24 +6,39 @@
       :state="state"
       :schema="schema"
       @submit.prevent="handleSubmit"
+      @error="onError"
     >
-      <UFormGroup name="name">
-        <UInput
-          v-model="state.name"
-          placeholder="Name"
-        />
-      </UFormGroup>
+
       <UFormGroup name="email">
         <UInput
           v-model="state.email"
-          placeholder="Email*"
+          placeholder="email*"
+        />
+      </UFormGroup>
+      <UFormGroup name="username">
+        <UInput
+          v-model="state.username"
+          placeholder="username*"
+        />
+      </UFormGroup>
+      <UFormGroup name="name">
+        <UInput
+          v-model="state.name"
+          placeholder="name"
         />
       </UFormGroup>
       <UFormGroup name="password">
         <UInput
           v-model="state.password"
           type="password"
-          placeholder="Password*"
+          placeholder="password*"
+        />
+      </UFormGroup>
+      <UFormGroup name="passwordRepeat">
+        <UInput
+          v-model="state.passwordRepeat"
+          type="password"
+          placeholder="repeat the password*"
         />
       </UFormGroup>
 
@@ -46,7 +61,8 @@
 </template>
 <script setup lang="ts">
 import { z } from 'zod'
-import type { Form, FormSubmitEvent } from '#ui/types'
+import type { Form, FormErrorEvent, FormSubmitEvent } from '#ui/types'
+import { userCreateSchema } from '~/types/schema'
 
 definePageMeta({
   pageTransition: {
@@ -68,18 +84,23 @@ definePageMeta({
     }]
 })
 
-const schema = z.object({
-  name: z.string().optional().or(z.literal('')),
-  email: z.string({ required_error: 'Required field' }).email('Please enter a valid email'),
-  password: z.string({ required_error: 'Required field' })
-})
+const schema = userCreateSchema
+  .extend({ passwordRepeat: z.string() })
+  .refine(data => data.password === data.passwordRepeat,
+    {
+      message: 'Passwords must match',
+      path: ['passwordRepeat']
+    }
+  )
 
 type Schema = z.output<typeof schema>
 
 const stateDefault = {
   email: undefined,
   name: undefined,
-  password: undefined
+  username: undefined,
+  password: undefined,
+  passwordRepeat: undefined
 }
 
 const state = reactive({ ...stateDefault })
@@ -95,7 +116,12 @@ const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
 
     await $fetch('/api/register', {
       method: 'POST',
-      body: state
+      body: {
+        email: state.email,
+        name: state.name,
+        username: state.username,
+        password: state.password
+      }
     })
 
     formRef.value?.clear()
@@ -113,5 +139,11 @@ const handleSubmit = async (event: FormSubmitEvent<Schema>) => {
   finally {
     isLoading.value = false
   }
+}
+
+async function onError(event: FormErrorEvent) {
+  const element = document.getElementById(event.errors[0].id)
+  element?.focus()
+  element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 </script>

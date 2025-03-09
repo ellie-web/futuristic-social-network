@@ -1,36 +1,22 @@
 import bcrypt from 'bcrypt'
-import { ServerFile } from 'nuxt-file-storage'
-import { z } from 'zod'
 import { InsertUser } from '~/database/schema'
+import { userCreateSchema } from '~/types/schema'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  const RegisterSchema = z.object({
-    email: z
-      .string({
-        required_error: 'Email is required'
-      })
-      .email(),
-    password: z
-      .string()
-      .min(8, 'Password must contain at least 8 symbols'),
-    name: z
-      .string()
-      .optional(),
-    avatarUrl: z
-      .undefined()
-  }).transform(val => ({
-    ...val,
-    name: val.name ? val.name : val.email
-  }))
-
-  const validatedData = RegisterSchema.safeParse({
-    email: body.email,
-    name: body.name,
-    avatarUrl: body.avatarUrl,
-    password: body.password
-  })
+  const validatedData = userCreateSchema
+    .transform(val => ({
+      ...val,
+      name: val.name ? val.name : val.username
+    }))
+    .safeParse({
+      email: body.email,
+      name: body.name,
+      username: body.username,
+      avatarUrl: body.avatarUrl,
+      password: body.password
+    })
 
   if (!validatedData.success) {
     throw createError({
@@ -61,7 +47,7 @@ export default defineEventHandler(async (event) => {
     console.log(err.toString())
     throw createError({
       statusCode: 500,
-      message: err.message
+      statusMessage: err.message
     })
   }
 })

@@ -9,6 +9,7 @@ async function login(event: H3Event<Request>, user: IUser) {
     // @ts-ignore
     user: {
       id: user.id,
+      username: user.username,
       email: user.email,
     },
     loggedInAt: new Date()

@@ -10,6 +10,7 @@ export type TFeedResponse = {
 export interface IFeedPost extends IPost {
   author: {
     name: string,
+    username: string,
     avatarUrl?: string
   }
 }

@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
         author: {
           columns: {
             name: true,
+            username: true,
             avatarUrl: true
           }
         }

@@ -4,6 +4,7 @@ import { integer, pgTable, primaryKey, serial, text, timestamp, index } from 'dr
 export const User = pgTable('User', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
+  username: text('username').notNull().unique(),
   email: text('email').notNull().unique(),
   password: text('password').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),

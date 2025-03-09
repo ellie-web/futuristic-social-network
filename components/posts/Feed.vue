@@ -9,7 +9,7 @@
           v-for="post in posts"
           :data="post"
           :key="post.id"
-          :link="userId ? `/users/${userId}/posts/${post.id}` : `/posts/${post.id}`"
+          :link="username ? `/users/${username}/posts/${post.id}` : `/posts/${post.id}`"
           class="mb-5"
         />
       </template>
@@ -25,9 +25,14 @@
 import type { TFeedResponse, TFeedNextCursor } from '~/types/feed'
 import { useInfiniteScroll } from '@vueuse/core'
 
+type TProps = {
+  userId?: number,
+  username?: string
+}
+
 const LIMIT = 10
 
-const { userId } = defineProps<{ userId?: number }>()
+const { userId, username } = defineProps<TProps>()
 
 const abortController = new AbortController()
 
